@@ -1,4 +1,5 @@
 add_subdirectory(C++11)
+add_subdirectory(Stackmaps)
 if(ARCH STREQUAL "Mips")
   add_subdirectory(Mips)
 endif()
