@@ -1,0 +1,37 @@
+StackMap #0
+  Location #0
+    Storage: Constant
+    Size:    4
+    Bytes:   32 00 00 00
+  Location #1
+    Storage: Constant
+    Size:    4
+    Bytes:   33 00 00 00
+  Location #2
+    Storage: Constant
+    Size:    4
+    Bytes:   34 00 00 00
+  Location #3
+    Storage: Constant
+    Size:    4
+    Bytes:   35 00 00 00
+
+StackMap #1
+  Location #0
+    Storage: Register
+    Size:    1
+    Bytes:   12
+  Location #1
+    Storage: Register
+    Size:    2
+    Bytes:   13 22
+  Location #2
+    Storage: Register
+    Size:    4
+    Bytes:   14 22 33 44
+  Location #3
+    Storage: Register
+    Size:    8
+    Bytes:   11 22 33 44 55 66 77 88
+
+exit 0
