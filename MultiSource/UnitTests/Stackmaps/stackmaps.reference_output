@@ -38,18 +38,18 @@ StackMap #2
   Location #0
     Storage: Indirect
     Size:    1
-    Bytes:   12
+    Bytes:   78
   Location #1
     Storage: Indirect
     Size:    2
-    Bytes:   13 22
+    Bytes:   79 66
   Location #2
     Storage: Indirect
     Size:    4
-    Bytes:   14 22 33 44
+    Bytes:   7a 66 55 44
   Location #3
     Storage: Indirect
     Size:    8
-    Bytes:   11 22 33 44 55 66 77 88
+    Bytes:   77 66 55 44 33 22 11 00
 
 exit 0

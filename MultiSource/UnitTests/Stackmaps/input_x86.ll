@@ -1,5 +1,3 @@
-@test_input = global i64 9833440827789222417 ; 0x8877665544332211
-
 declare void @sm_inspect()
 declare void @llvm.experimental.patchpoint.void(i64, i32, i8*, i32, ...)
 
@@ -39,7 +37,7 @@ define void @integer_tests2(i64 %test_input) noinline {
 
   ; By clobbering all of the general puprpose registers, we force this frame's
   ; local variables to be allocated on the stack.
-  call void asm sideeffect "nop; nop; nop", "~{rax},~{rdx},~{rcx},~{rbx},~{rsi},~{rdi},~{rbp},~{rsp},~{r8},~{r9},~{r10},~{r11},~{r12},~{r13},~{r14},~{r15}"()
+  call void asm sideeffect "", "~{rax},~{rdx},~{rcx},~{rbx},~{rsi},~{rdi},~{rbp},~{rsp},~{r8},~{r9},~{r10},~{r11},~{r12},~{r13},~{r14},~{r15}"()
 
   call void (i64, i32, i8*, i32, ...) @llvm.experimental.patchpoint.void(i64 2, i32
   16, i8* %fptr, i32 0, i8 %arg8, i16 %arg16, i32 %arg32, i64 %test_input)
@@ -47,9 +45,14 @@ define void @integer_tests2(i64 %test_input) noinline {
   ret void
 }
 
-define void @run_tests(i64* %arg) noinline {
-  %test_input = load i64, i64* %arg
-  call void @integer_tests(i64 %test_input)
-  call void @integer_tests2(i64 %test_input)
+define void @run_tests() noinline {
+  ; 0x8877665544332211
+  %in1 = call i64 asm sideeffect "nop", "=r,0"(i64 9833440827789222417)
+  call void @integer_tests(i64 %in1)
+
+  ; 0x1122334455667788
+  %in2 = call i64 asm sideeffect "", "=r,0"(i64 4822678189205111)
+  call void @integer_tests2(i64 %in2)
+
   ret void
 }

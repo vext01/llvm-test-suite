@@ -24,11 +24,7 @@ uint64_t NextID = 0;
 int ExitStatus = EXIT_SUCCESS;
 
 // Defined in the `.ll` file for the platform under test.
-extern "C" void run_tests(uintptr_t *);
-
-// Defined the the `.ll` file for the platform under test. It must be
-// pointer-sized.
-extern uintptr_t test_input;
+extern "C" void run_tests();
 
 void dumpMem(const char *Ptr, size_t Size) {
   // FIXME: should it be unsigned char everywhere?
@@ -160,12 +156,11 @@ __attribute__((naked)) extern "C" void sm_inspect() {
                "push rcx\n"
                "push rdx\n"
                "push rax\n"
+
                // Call do_sm_inspect().
                //
-               // Arg #0: pointer to saved registers.
+               // Arg: pointer to saved registers.
                "mov rdi, rsp\n"
-               // Arg #1: return address.
-               //"mov rsi, [rsp - 136]\n"
                "call do_sm_inspect\n"
 
                // Restore registers we saved earlier.
@@ -188,8 +183,6 @@ __attribute__((naked)) extern "C" void sm_inspect() {
                "ret");
 }
 
-#define NOOPT_VAL(X) asm volatile("" : "+r,m"(X) : : "memory");
-
 int main(int argc, char *argv[]) {
   void *Map;
   off_t MapSize;
@@ -201,9 +194,7 @@ int main(int argc, char *argv[]) {
   munmap(Map, MapSize);
 
   SMPRef = &SMP;
-
-  NOOPT_VAL(test_input);
-  run_tests(&test_input);
+  run_tests();
 
   return ExitStatus;
 }
