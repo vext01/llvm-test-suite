@@ -88,15 +88,22 @@ char *getStackMapSectionAddr(char *Path, void **OutMap, off_t *OutMapSize) {
 
 // Get a pointer to the start of the storage referenced by `Loc`.
 //
-// This code asssumes that a register is the size of a pointer.
+// This code assumes that a register is the size of a pointer. We get away with
+// this for now since we don't test any vector registers.
 char *getMemForLoc(SMLoc *Loc, uintptr_t RegVals[]) {
   switch (Loc->Where) {
   case Reg:
     // Get the saved register values off of the stack.
     return reinterpret_cast<char *>(&RegVals[Loc->RegNum]);
   case Direct:
-    errx(EXIT_FAILURE, "Direct locations unimplemented");
   case Indirect:
+    // Note that in the case of `Direct`, the record is describing a pointer
+    // value (pointing to the stack). It doesn't really make sense to test such
+    // a value, as (due to ASLR) it will change between runs. Instead we print
+    // what it points to. This comes with the caveat that because the stackmap
+    // is describing a pointer, `Loc->Size` will refer to the size of a
+    // pointer, and we have no way to know the size of the pointee. For now we
+    // just print the first `sizeof(uintptr_t)` bytes of the pointee.
     return reinterpret_cast<char *>(RegVals[Loc->RegNum]) + Loc->OffsetOrSmallConst;
   case Const:
     // Get the constant directly from the stackmap record.
