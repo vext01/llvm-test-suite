@@ -52,4 +52,10 @@ StackMap #2
     Size:    8
     Bytes:   77 66 55 44 33 22 11 00
 
+StackMap #3
+  Location #0
+    Storage: Direct
+    Size:    8
+    Bytes:   44 44 44 44 44 44 44 44
+
 exit 0

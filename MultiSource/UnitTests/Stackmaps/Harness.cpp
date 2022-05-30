@@ -68,7 +68,7 @@ char *getStackMapSectionAddr(char *Path, void **OutMap, off_t *OutMapSize) {
   uint16_t StrTabShIdx = Ehdr->e_shstrndx;
   assert(StrTabShIdx != SHN_UNDEF);
   if (StrTabShIdx >= SHN_LORESERVE)
-    return nullptr; // FIXME not yet implemented. See `elf(5)` manual.
+    return nullptr; // not yet implemented. See `elf(5)` manual.
 
   Elf64_Shdr *StrTabSh = &Shdrs[StrTabShIdx];
   assert(StrTabSh->sh_type == ELF::SHT_STRTAB);
@@ -95,13 +95,18 @@ char *getMemForLoc(SMLoc *Loc, uintptr_t RegVals[]) {
     return reinterpret_cast<char *>(&RegVals[Loc->RegNum]);
   case Direct:
   case Indirect:
-    // Note that in the case of `Direct`, the record is describing a pointer
-    // value (pointing to the stack). It doesn't really make sense to test such
-    // a value, as (due to ASLR) it will change between runs. Instead we print
+    // FIXME: In the case of `Direct`, the record is describing a pointer value
+    // (pointing to the stack). It doesn't really make sense to test such a
+    // value, as (due to ASLR) it will change between runs. Instead we print
     // what it points to. This comes with the caveat that because the stackmap
     // is describing a pointer, `Loc->Size` will refer to the size of a
     // pointer, and we have no way to know the size of the pointee. For now we
     // just print the first `sizeof(uintptr_t)` bytes of the pointee.
+    //
+    // What we should really do is encode the expected sizes of the data we
+    // want to print into the arguments of the call to
+    // `llvm.experimental.patchpoint`. This would also allow us to test things
+    // like floats, which often get stored into larger XMM registers.
     return reinterpret_cast<char *>(RegVals[Loc->RegNum]) +
            Loc->OffsetOrSmallConst;
   case Const:

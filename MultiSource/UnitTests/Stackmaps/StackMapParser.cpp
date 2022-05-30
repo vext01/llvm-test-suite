@@ -26,9 +26,7 @@ template <typename T> T StackMapParser::read(char **SMData) {
 }
 
 void StackMapParser::alignTo(char **SMData, size_t To) {
-  // FIXME improve.
-  while (reinterpret_cast<uintptr_t>(*SMData) % To != 0)
-    (*SMData)++;
+  *SMData += reinterpret_cast<uintptr_t>(*SMData) % To;
 }
 
 StackMapParser::StackMapParser(char *SMData) {
