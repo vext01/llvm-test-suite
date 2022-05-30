@@ -26,7 +26,6 @@ uint64_t NextID = 0;
 extern "C" void run_tests();
 
 void dumpMem(const char *Ptr, size_t Size) {
-  // FIXME: should it be unsigned char everywhere?
   for (size_t I = 0; I < Size; I++) {
     printf("%02x", (unsigned char)Ptr[I]);
     if (I != Size - 1)
