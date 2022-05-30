@@ -21,7 +21,6 @@ using namespace std;
 
 StackMapParser *SMPRef = nullptr;
 uint64_t NextID = 0;
-int ExitStatus = EXIT_SUCCESS;
 
 // Defined in the `.ll` file for the platform under test.
 extern "C" void run_tests();
@@ -203,5 +202,5 @@ int main(int argc, char *argv[]) {
   SMPRef = &SMP;
   run_tests();
 
-  return ExitStatus;
+  return EXIT_SUCCESS;
 }
