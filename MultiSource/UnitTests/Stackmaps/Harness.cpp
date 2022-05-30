@@ -101,7 +101,7 @@ char *getMemForLoc(SMLoc *Loc, uintptr_t RegVals[]) {
   case Direct:
     errx(EXIT_FAILURE, "Direct locations unimplemented");
   case Indirect:
-    errx(EXIT_FAILURE, "Indirect locations unimplemented");
+    return reinterpret_cast<char *>(RegVals[Loc->RegNum]) + Loc->OffsetOrSmallConst;
   case Const:
     // Get the constant directly from the stackmap record.
     return reinterpret_cast<char *>(&Loc->OffsetOrSmallConst);
