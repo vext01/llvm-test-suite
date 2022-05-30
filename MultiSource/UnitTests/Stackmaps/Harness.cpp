@@ -142,6 +142,7 @@ extern "C" void do_sm_inspect(uintptr_t RegVals[]) { //, uintptr_t RetAddr) {
   cout << "\n";
 }
 
+#ifdef __x86_64__
 __attribute__((naked)) extern "C" void sm_inspect() {
   asm volatile(".intel_syntax noprefix\n"
                // Save register state onto the stack in reverse DWARF register
@@ -188,6 +189,7 @@ __attribute__((naked)) extern "C" void sm_inspect() {
                "pop r15\n"
                "ret");
 }
+#endif // __x86_64__
 
 int main(int argc, char *argv[]) {
   void *Map;
