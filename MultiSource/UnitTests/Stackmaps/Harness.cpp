@@ -103,7 +103,8 @@ char *getMemForLoc(SMLoc *Loc, uintptr_t RegVals[]) {
     // is describing a pointer, `Loc->Size` will refer to the size of a
     // pointer, and we have no way to know the size of the pointee. For now we
     // just print the first `sizeof(uintptr_t)` bytes of the pointee.
-    return reinterpret_cast<char *>(RegVals[Loc->RegNum]) + Loc->OffsetOrSmallConst;
+    return reinterpret_cast<char *>(RegVals[Loc->RegNum]) +
+           Loc->OffsetOrSmallConst;
   case Const:
     // Get the constant directly from the stackmap record.
     return reinterpret_cast<char *>(&Loc->OffsetOrSmallConst);
