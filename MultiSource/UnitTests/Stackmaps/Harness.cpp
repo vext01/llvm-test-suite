@@ -14,6 +14,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <vector>
+#include <stdarg.h>
 
 #include "StackMapParser.h"
 
@@ -21,9 +22,21 @@ using namespace std;
 
 StackMapParser *SMPRef = nullptr;
 uint64_t NextID = 0;
+vector<size_t> InspectSizes;
 
 // Defined in the `.ll` file for the platform under test.
 extern "C" void run_tests();
+
+extern "C" void sm_set_inspect_sizes(int NumArgs, ...) {
+  va_list VA;
+  va_start(VA, NumArgs);
+
+  InspectSizes.clear();
+  for (int I = 0; I < NumArgs; I++)
+      InspectSizes.push_back(va_arg(VA, size_t));
+
+  va_end(VA);
+}
 
 void dumpMem(const char *Ptr, size_t Size) {
   for (size_t I = 0; I < Size; I++) {
@@ -119,32 +132,37 @@ char *getMemForLoc(SMLoc *Loc, uintptr_t RegVals[]) {
   }
 }
 
-extern "C" void do_sm_inspect(uintptr_t RegVals[]) { //, uintptr_t RetAddr) {
+extern "C" void do_sm_inspect(uintptr_t RegVals[]) {
   SMRec *Rec = SMPRef->getRecord(NextID);
   if (Rec == nullptr)
-    errx(EXIT_FAILURE, "Failed to find stackmap record #%u\n", NextID);
+    errx(EXIT_FAILURE, "Failed to find stackmap record #%" PRIu64 "\n", NextID);
 
   cout << "StackMap #" << NextID << "\n";
   size_t LocNum = 0;
+  vector<size_t>::iterator InspectSizesIt = InspectSizes.begin();
   for (auto Loc : Rec->Locs) {
     char *GotPtr = getMemForLoc(&Loc, RegVals);
 
     // FIXME: This is arguably a bug in LLVM stackmaps. Small constants are
     // reported as being 8 bytes long, but the stackmap format only allows for
     // 4 bytes.
-    size_t GotSize = Loc.Size;
-    if (Loc.Where == Const)
-      GotSize = 4;
+    //size_t GotSize = Loc.Size;
+    //if (Loc.Where == Const)
+    //  GotSize = 4;
+    size_t InspectSize = *InspectSizesIt;
 
     cout << "  Location #" << LocNum << "\n";
-    cout << "    Storage: " << getStorageClassName(Loc.Where) << "\n";
-    cout << "    Size:    " << GotSize << "\n";
-    cout << "    Bytes:   ";
-    dumpMem(GotPtr, GotSize);
+    cout << "    Storage:      " << getStorageClassName(Loc.Where) << "\n";
+    cout << "    Storage Size: " << Loc.Size << "\n";
+    cout << "    Inspect Size: " << InspectSize << "\n";
+    cout << "    Bytes:        ";
+    dumpMem(GotPtr, InspectSize);
     LocNum++;
+    InspectSizesIt++;
   }
   NextID++;
   cout << "\n";
+  assert(InspectSizesIt == InspectSizes.end() && "too many inspect sizes");
 }
 
 #ifdef __x86_64__
