@@ -1,12 +1,8 @@
-#include <inttypes.h>
-
 #include <assert.h>
 #include <elf.h>
 #include <err.h>
 #include <fcntl.h>
-#include <iomanip>
-#include <iostream>
-#include <map>
+#include <inttypes.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
@@ -14,6 +10,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include <iostream>
 #include <vector>
 
 #include "StackMapParser.h"
@@ -69,10 +67,10 @@ char *getStackMapSectionAddr(char *Path, void **OutMap, off_t *OutMapSize) {
 
   // Now find the stackmap section inside what we just mapped in.
   Elf64_Ehdr *Ehdr = static_cast<Elf64_Ehdr *>(Map);
-  assert(Ehdr[0].e_ident = EI_MAG0);
-  assert(Ehdr[1].e_ident = EI_MAG1);
-  assert(Ehdr[2].e_ident = EI_MAG2);
-  assert(Ehdr[3].e_ident = EI_MAG3);
+  assert(*Ehdr[0].e_ident == EI_MAG0);
+  assert(*Ehdr[1].e_ident == EI_MAG1);
+  assert(*Ehdr[2].e_ident == EI_MAG2);
+  assert(*Ehdr[3].e_ident == EI_MAG3);
 
   Elf64_Shdr *Shdrs = static_cast<Elf64_Shdr *>(
       static_cast<void *>(static_cast<char *>(Map) + Ehdr->e_shoff));

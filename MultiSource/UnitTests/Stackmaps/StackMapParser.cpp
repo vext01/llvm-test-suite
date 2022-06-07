@@ -1,19 +1,7 @@
-#include <inttypes.h>
-
 #include <assert.h>
-#include <elf.h>
 #include <err.h>
-#include <fcntl.h>
-#include <iomanip>
+
 #include <iostream>
-#include <map>
-#include <stdio.h>
-#include <string.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <vector>
 
 #include "StackMapParser.h"
 
