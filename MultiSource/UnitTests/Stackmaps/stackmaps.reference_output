@@ -1,61 +1,88 @@
 StackMap #0
   Location #0
-    Storage: Constant
-    Size:    4
-    Bytes:   32 00 00 00
+    Storage:      Constant
+    Storage Size: 8
+    Inspect Size: 1
+    Bytes:        32
   Location #1
-    Storage: Constant
-    Size:    4
-    Bytes:   33 00 00 00
+    Storage:      Constant
+    Storage Size: 8
+    Inspect Size: 2
+    Bytes:        33 00
   Location #2
-    Storage: Constant
-    Size:    4
-    Bytes:   34 00 00 00
+    Storage:      Constant
+    Storage Size: 8
+    Inspect Size: 3
+    Bytes:        34 00 00
   Location #3
-    Storage: Constant
-    Size:    4
-    Bytes:   35 00 00 00
+    Storage:      Constant
+    Storage Size: 8
+    Inspect Size: 4
+    Bytes:        35 00 00 00
 
 StackMap #1
   Location #0
-    Storage: Register
-    Size:    1
-    Bytes:   12
+    Storage:      Register
+    Storage Size: 1
+    Inspect Size: 1
+    Bytes:        78
   Location #1
-    Storage: Register
-    Size:    2
-    Bytes:   13 22
+    Storage:      Register
+    Storage Size: 2
+    Inspect Size: 2
+    Bytes:        79 66
   Location #2
-    Storage: Register
-    Size:    4
-    Bytes:   14 22 33 44
+    Storage:      Register
+    Storage Size: 4
+    Inspect Size: 4
+    Bytes:        7a 66 55 44
   Location #3
-    Storage: Register
-    Size:    8
-    Bytes:   11 22 33 44 55 66 77 88
+    Storage:      Register
+    Storage Size: 8
+    Inspect Size: 8
+    Bytes:        77 66 55 44 33 22 11 00
 
 StackMap #2
   Location #0
-    Storage: Indirect
-    Size:    1
-    Bytes:   78
+    Storage:      Indirect
+    Storage Size: 1
+    Inspect Size: 1
+    Bytes:        78
   Location #1
-    Storage: Indirect
-    Size:    2
-    Bytes:   79 66
+    Storage:      Indirect
+    Storage Size: 2
+    Inspect Size: 2
+    Bytes:        79 66
   Location #2
-    Storage: Indirect
-    Size:    4
-    Bytes:   7a 66 55 44
+    Storage:      Indirect
+    Storage Size: 4
+    Inspect Size: 4
+    Bytes:        7a 66 55 44
   Location #3
-    Storage: Indirect
-    Size:    8
-    Bytes:   77 66 55 44 33 22 11 00
+    Storage:      Indirect
+    Storage Size: 8
+    Inspect Size: 8
+    Bytes:        77 66 55 44 33 22 11 00
 
 StackMap #3
   Location #0
-    Storage: Direct
-    Size:    8
-    Bytes:   44 44 44 44 44 44 44 44
+    Storage:      Direct
+    Storage Size: 8
+    Inspect Size: 1
+    Bytes:        aa
+  Location #1
+    Storage:      Direct
+    Storage Size: 8
+    Inspect Size: 2
+    Bytes:        bb bb
+  Location #2
+    Storage:      Direct
+    Storage Size: 8
+    Inspect Size: 4
+    Bytes:        cc cc cc cc
+  Location #3
+    Storage:      Direct
+    Storage Size: 8
+    Inspect Size: 8
+    Bytes:        dd dd dd dd dd dd dd dd
 
-exit 0
