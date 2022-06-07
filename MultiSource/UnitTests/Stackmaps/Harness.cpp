@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/mman.h>
@@ -14,7 +15,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <vector>
-#include <stdarg.h>
 
 #include "StackMapParser.h"
 
@@ -33,7 +33,7 @@ extern "C" void sm_set_inspect_sizes(int NumArgs, ...) {
 
   InspectSizes.clear();
   for (int I = 0; I < NumArgs; I++)
-      InspectSizes.push_back(va_arg(VA, size_t));
+    InspectSizes.push_back(va_arg(VA, size_t));
 
   va_end(VA);
 }
@@ -108,18 +108,9 @@ char *getMemForLoc(SMLoc *Loc, uintptr_t RegVals[]) {
     return reinterpret_cast<char *>(&RegVals[Loc->RegNum]);
   case Direct:
   case Indirect:
-    // FIXME: In the case of `Direct`, the record is describing a pointer value
-    // (pointing to the stack). It doesn't really make sense to test such a
-    // value, as (due to ASLR) it will change between runs. Instead we print
-    // what it points to. This comes with the caveat that because the stackmap
-    // is describing a pointer, `Loc->Size` will refer to the size of a
-    // pointer, and we have no way to know the size of the pointee. For now we
-    // just print the first `sizeof(uintptr_t)` bytes of the pointee.
-    //
-    // What we should really do is encode the expected sizes of the data we
-    // want to print into the arguments of the call to
-    // `llvm.experimental.patchpoint`. This would also allow us to test things
-    // like floats, which often get stored into larger XMM registers.
+    // Note: In the case of `Direct`, the record is describing a pointer value
+    // (pointing to the stack). We report the memory the pointer points to, not
+    // the memory of the pointer itself.
     return reinterpret_cast<char *>(RegVals[Loc->RegNum]) +
            Loc->OffsetOrSmallConst;
   case Const:
@@ -142,13 +133,6 @@ extern "C" void do_sm_inspect(uintptr_t RegVals[]) {
   vector<size_t>::iterator InspectSizesIt = InspectSizes.begin();
   for (auto Loc : Rec->Locs) {
     char *GotPtr = getMemForLoc(&Loc, RegVals);
-
-    // FIXME: This is arguably a bug in LLVM stackmaps. Small constants are
-    // reported as being 8 bytes long, but the stackmap format only allows for
-    // 4 bytes.
-    //size_t GotSize = Loc.Size;
-    //if (Loc.Where == Const)
-    //  GotSize = 4;
     size_t InspectSize = *InspectSizesIt;
 
     cout << "  Location #" << LocNum << "\n";
