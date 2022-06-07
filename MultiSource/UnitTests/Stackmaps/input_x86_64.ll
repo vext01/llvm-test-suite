@@ -77,7 +77,7 @@ define void @run_tests() noinline {
   call void @integer_tests(i64 %in1)
 
   ; 0x1122334455667788
-  %in2 = call i64 asm sideeffect "", "=r,0"(i64 4822678189205111)
+  %in2 = call i64 asm sideeffect "", "=r,0"(i64 1234605616436508552)
   call void @integer_tests2(i64 %in2)
   call void @integer_tests3(i64 %in2)
 

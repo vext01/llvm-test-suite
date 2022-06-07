@@ -25,44 +25,44 @@ StackMap #1
     Storage:      Register
     Storage Size: 1
     Inspect Size: 1
-    Bytes:        78
+    Bytes:        89
   Location #1
     Storage:      Register
     Storage Size: 2
     Inspect Size: 2
-    Bytes:        79 66
+    Bytes:        8a 77
   Location #2
     Storage:      Register
     Storage Size: 4
     Inspect Size: 4
-    Bytes:        7a 66 55 44
+    Bytes:        8b 77 66 55
   Location #3
     Storage:      Register
     Storage Size: 8
     Inspect Size: 8
-    Bytes:        77 66 55 44 33 22 11 00
+    Bytes:        88 77 66 55 44 33 22 11
 
 StackMap #2
   Location #0
     Storage:      Indirect
     Storage Size: 1
     Inspect Size: 1
-    Bytes:        78
+    Bytes:        89
   Location #1
     Storage:      Indirect
     Storage Size: 2
     Inspect Size: 2
-    Bytes:        79 66
+    Bytes:        8a 77
   Location #2
     Storage:      Indirect
     Storage Size: 4
     Inspect Size: 4
-    Bytes:        7a 66 55 44
+    Bytes:        8b 77 66 55
   Location #3
     Storage:      Indirect
     Storage Size: 8
     Inspect Size: 8
-    Bytes:        77 66 55 44 33 22 11 00
+    Bytes:        88 77 66 55 44 33 22 11
 
 StackMap #3
   Location #0
